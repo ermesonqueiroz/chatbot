@@ -15,10 +15,8 @@ class RecognizeActionService
         $prompt = <<< EOD
         Preciso saber qual ação tomar agora, então identifique quão ação eu devo tomar à partir da última mensagem do cliente.
 
-        Ações:
-
-        Cliente informou o horário que precisa fazer um agendamento, caso seja verdade retorne uma mensagem no seguinte formato:  create_appointment, {{data_do_agendamento}}>
-        Caso nenhuma das ações anteriores sejam verdadeiras retorne uma mensagem no seguinte formato: no_action, null
+        Quando o cliente pedir para marcar um horário aguarde o momento em que ele passa todos os dados de dia e horário do agendamento e retorne uma mensagem no seguinte formato:  create_appointment, {{data_do_agendamento}}>
+        Caso seja apenas uma mensagem pedindo uma informação ou algo que não gere um efeito colateral no back-end retorne uma mensagem no seguinte formato: no_action, null
         EOD;
 
 
