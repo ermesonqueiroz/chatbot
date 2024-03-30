@@ -10,21 +10,23 @@ class RecognizeActionService
         private readonly SendPromptToAIService $sendPromptToAIService
     ) {}
 
-    public function run(array $chatHistory): string
+    public function run(array $chatHistory): array
     {
         $prompt = <<< EOD
         Preciso saber qual ação tomar agora, então identifique quão ação eu devo tomar à partir da última mensagem do cliente.
 
         Ações:
 
-        Cliente informou o horário que precisa fazer um agendamento, caso seja verdade retorne uma mensagem no seguinte formato:  create_appointment, <data_do_agendamento>
-        Caso nenhuma das ações anteriores sejam verdadeiras retorne uma mensagem no seguinte formato: no_action
+        Cliente informou o horário que precisa fazer um agendamento, caso seja verdade retorne uma mensagem no seguinte formato:  create_appointment, {{data_do_agendamento}}>
+        Caso nenhuma das ações anteriores sejam verdadeiras retorne uma mensagem no seguinte formato: no_action, null
         EOD;
 
 
-        return $this->sendPromptToAIService->run([
+        $response = $this->sendPromptToAIService->run([
            ...$chatHistory,
            PromptContent::create('user', $prompt)
         ]);
+
+        return explode(',', $response);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class SendPromptToAIService
 {
-    public function run(array ...$contents): string
+    public function run(array $contents): string
     {
         $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' . env('GEMINI_API_KEY');
         $response = Http::post($url, [
@@ -38,6 +38,7 @@ class SendPromptToAIService
             ]
         ]);
 
+        logger($response->json());
         return $response->json('candidates')[0]['content']['parts'][0]['text'];
     }
 }
