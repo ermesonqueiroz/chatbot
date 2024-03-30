@@ -18,7 +18,7 @@ class HandleWhatsappMessageService
 
     public function run(): void
     {
-        $chatHistory = MountMessagesHistory::run($this->message->get());
+        $chatHistory = MountMessagesHistory::run($this->message->get()->toArray());
 
         $lastMessage = $this->message->get()->last();
         $response = $this->sendPromptToAIService->run($chatHistory);
