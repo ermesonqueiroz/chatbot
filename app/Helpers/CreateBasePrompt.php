@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Prompt;
+namespace App\Helpers;
 
 use App\Data\PromptContent;
 
