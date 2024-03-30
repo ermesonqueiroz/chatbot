@@ -38,7 +38,6 @@ class SendPromptToAIService
             ]
         ]);
 
-        logger(json_encode($response->json()));
         return $response->json('candidates')[0]['content']['parts'][0]['text'];
     }
 }
