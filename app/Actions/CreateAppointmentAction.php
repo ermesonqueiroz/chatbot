@@ -14,4 +14,11 @@ class CreateAppointmentAction extends Action
     {
         $this->createAppointmentService->run();
     }
+
+    static function create(): Action
+    {
+        return new CreateAppointmentAction(
+            new CreateAppointmentService()
+        );
+    }
 }
