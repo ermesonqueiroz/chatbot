@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('body');
-            $table->string('model_response')->nullable();
+            $table->text('body');
+            $table->text('model_response')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
