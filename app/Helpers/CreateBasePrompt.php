@@ -30,12 +30,6 @@ class CreateBasePrompt
         return [
             PromptContent::create('user', $user),
             PromptContent::create('model', $model),
-            PromptContent::create('user', 'Gostaria de marcar um horário'),
-            PromptContent::create('model', 'Claro, com prazer! Para agendar um horário, preciso de algumas informações. Qual o seu nome, por favor?'),
-            PromptContent::create('user', 'Ermeson'),
-            PromptContent::create('model', 'Ermeson, que ótimo! Qual serviço você gostaria de agendar? Oferecemos Design Personalizado, Design com Henna e Micropigmentação, todos para sobrancelhas.'),
-            PromptContent::create('user', 'Quero fazer um design com henna'),
-            PromptContent::create('model', 'Para qual dia e horário você gostaria de agendar? Lembrando que atendemos de segunda a sexta, das 08:00 às 17:00, com tempo de atendimento de 1 hora.')
         ];
     }
 }
