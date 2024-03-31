@@ -21,8 +21,6 @@ class HandleWhatsappMessageService
     {
         $chatHistory = MountMessagesHistory::run($this->message->all());
 
-        logger(json_encode(array_slice($chatHistory, 1)));
-
         $lastMessage = $this->message->get()->last();
         $response = $this->sendPromptToAIService->run($chatHistory);
         $this->addModelResponseInMessage->run($lastMessage, $response);
