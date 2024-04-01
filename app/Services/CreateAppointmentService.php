@@ -14,7 +14,7 @@ class CreateAppointmentService
     public function __construct()
     {
         $client = new Client();
-        $client->setAuthConfig(__DIR__ . '../../google-calendar-key.json');
+        $client->setAuthConfig(__DIR__ . '/../../google-calendar-key.json');
         $client->setRedirectUri('http://18.224.69.123');
         $client->addScope(Calendar::CALENDAR);
 

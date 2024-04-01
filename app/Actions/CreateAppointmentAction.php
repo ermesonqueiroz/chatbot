@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Services\CreateAppointmentService;
+use Illuminate\Support\Carbon;
 
 class CreateAppointmentAction extends Action
 {
@@ -12,7 +13,12 @@ class CreateAppointmentAction extends Action
 
     public function run(string $data): void
     {
-        $this->createAppointmentService->run();
+        $start = Carbon::create($data);
+        $this->createAppointmentService->run(
+            'Agendamento de alguma cliente teste',
+            $start,
+            $start->addHour(1)
+        );
     }
 
     static function create(): Action
