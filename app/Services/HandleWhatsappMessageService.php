@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Data\PromptContent;
 use App\Helpers\MountMessagesHistory;
+use App\Models\Customer;
 use App\Models\Message;
 
 class HandleWhatsappMessageService
@@ -17,7 +18,7 @@ class HandleWhatsappMessageService
         private readonly HandleActionService $handleActionService,
     ) {}
 
-    public function run(): void
+    public function run(Customer $customer): void
     {
         $chatHistory = MountMessagesHistory::run($this->message->all());
 
@@ -30,7 +31,7 @@ class HandleWhatsappMessageService
             PromptContent::create('model', $response)
         ]);
 
-        if ($action != 'no_action') $this->handleActionService->run($action, $data);
+        if ($action != 'no_action') $this->handleActionService->run($action, $customer, $data);
         $this->sendWhatsappMessageService->run($response);
     }
 }

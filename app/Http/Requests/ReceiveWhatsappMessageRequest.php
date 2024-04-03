@@ -10,6 +10,7 @@ class ReceiveWhatsappMessageRequest extends FormRequest
     {
         return [
             'Body' => ['required', 'string'],
+            'From' => ['required', 'string'],
         ];
     }
 }
