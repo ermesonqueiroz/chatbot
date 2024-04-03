@@ -23,8 +23,6 @@ class CreateAppointmentService
 
     public function run(string $summary, Carbon $start, Carbon $end): void
     {
-        logger($start->toIso8601String());
-
         $data = new Event([
             'summary' => $summary,
             'start' => [
