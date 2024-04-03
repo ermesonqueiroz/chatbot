@@ -13,10 +13,10 @@ class CreateAppointmentAction extends Action
         private readonly Customer $customer
     ) {}
 
-    public function run(string $customerName): void
+    public function run(string $data): void
     {
-        $start = Carbon::create($customerName);
-        $end = Carbon::create($customerName)->addHour(1);
+        $start = Carbon::create($data);
+        $end = Carbon::create($data)->addHour(1);
 
         $this->createAppointmentService->run(
             "Agendamento do cliente {$this->customer->name}",

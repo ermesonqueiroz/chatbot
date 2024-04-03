@@ -11,9 +11,9 @@ class UpdateCustomerNameAction extends Action
         private readonly UpdateCustomerNameService $updateCustomerNameService
     ) {}
 
-    public function run(string $customerName): void
+    public function run(string $data): void
     {
-        $this->updateCustomerNameService->run($customerName);
+        $this->updateCustomerNameService->run($data);
     }
 
     static function create(Customer $customer): Action
