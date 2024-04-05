@@ -21,9 +21,10 @@ class RecognizeActionService
 
         Quando o cliente informar qual serviço ele quer agendar retorne uma mensagem no seguinte formato: attach_service_to_appointment,<id_do_servico>
 
+        Leve em consideração o fluxo padrão de um agendamento sendo: Primeiramente pedir o nome do cliente, após isso pedir o nome do serviço e então pedir o horário do agendamento.
+
         A <data_do_agendamento> deve seguir o formato ISO 8601 (leve em consideração a data de hoje sendo {$today->toIso8601String()})
         EOD;
-
 
         $response = $this->sendPromptToAIService->run([
            ...$chatHistory,
