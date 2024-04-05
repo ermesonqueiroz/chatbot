@@ -19,6 +19,8 @@ class RecognizeActionService
         Quando o cliente pedir para marcar um horário e informar o dia e a hora do agendamento retorne uma mensagem no seguinte formato: create_appointment,<data_do_agendamento>.
         Caso seja apenas uma mensagem pedindo uma informação ou algo que não gere um efeito colateral no back-end retorne uma mensagem no seguinte formato: no_action,null
 
+        Quando o cliente informar qual serviço ele quer agendar retorne uma mensagem no seguinte formato: attach_service_to_appointment_action,<id_do_servico>
+
         A <data_do_agendamento> deve seguir o formato ISO 8601 (leve em consideração a data de hoje sendo {$today->toIso8601String()})
         EOD;
 
