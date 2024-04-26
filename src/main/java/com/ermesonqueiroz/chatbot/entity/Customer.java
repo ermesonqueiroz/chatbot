@@ -1,8 +1,13 @@
 package com.ermesonqueiroz.chatbot.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Entity(name = "customers")
 public class Customer {
@@ -15,10 +20,19 @@ public class Customer {
 
     private String name;
 
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    public Customer() {}
+    public Customer() {
+    }
 
     public Customer(String phoneNumber, String name) {
         this.phoneNumber = phoneNumber;

@@ -6,6 +6,7 @@ import com.ermesonqueiroz.chatbot.response.CustomerResponse;
 import java.util.Optional;
 
 public interface CustomerService {
-    public abstract CustomerResponse createCustomer(CreateCustomerRequest storeCustomerRequest) throws Exception;
-    public abstract Optional<CustomerResponse> findById(String customerId);
+    CustomerResponse createCustomer(CreateCustomerRequest storeCustomerRequest) throws Exception;
+    Optional<CustomerResponse> findById(String customerId);
+//    void updateCustomerName(String customerId, String customerName);
 }
