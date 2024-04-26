@@ -22,7 +22,7 @@ public class AiAssistant {
         this.assistant = AiServices.builder(Assistant.class)
                 .chatLanguageModel(model)
                 .tools(new AiAssistantTools(customerRepository))
-                .systemMessageProvider(chatMemoryId -> String.format("The Customer ID is '%s'", customerId))
+                .systemMessageProvider(chatMemoryId -> String.format("Lembre-se de sempre responder em Português Brasil. O ID do cliente é '%s'", customerId))
                 .build();
     }
 

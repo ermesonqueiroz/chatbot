@@ -13,7 +13,7 @@ public class AiAssistantTools {
         this.customerRepository = CustomerRepository;
     }
 
-    @Tool("Save the customer name in database")
+    @Tool("Salvar o nome do cliente quando ele informar para fornecer mais informações para o agendamento.")
     void saveCustomerName(String customerName, String customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isEmpty()) return;
