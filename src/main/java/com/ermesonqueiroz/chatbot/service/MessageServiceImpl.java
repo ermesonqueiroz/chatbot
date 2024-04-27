@@ -4,6 +4,7 @@ import com.ermesonqueiroz.chatbot.ChatbotConfigProperties;
 import com.ermesonqueiroz.chatbot.entity.Message;
 import com.ermesonqueiroz.chatbot.entity.MessageRole;
 import com.ermesonqueiroz.chatbot.exceptions.CustomerNotFoundException;
+import com.ermesonqueiroz.chatbot.repository.AppointmentRepository;
 import com.ermesonqueiroz.chatbot.repository.MessageRepository;
 import com.ermesonqueiroz.chatbot.request.ReceiveMessageRequest;
 import com.ermesonqueiroz.chatbot.response.MessageResponse;
@@ -15,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +26,14 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final MessageResponseMapper messageResponseMapper;
     private final ChatbotConfigProperties chatbotConfigProperties;
+    private final AppointmentRepository appointmentRepository;
 
-    public MessageServiceImpl(CustomerRepository customerRepository, MessageRepository messageRepository, MessageResponseMapper messageResponseMapper, ChatbotConfigProperties chatbotConfigProperties, CustomerServiceImpl customerServiceImpl) {
+    public MessageServiceImpl(CustomerRepository customerRepository, MessageRepository messageRepository, MessageResponseMapper messageResponseMapper, ChatbotConfigProperties chatbotConfigProperties, AppointmentRepository appointmentRepository) {
         this.customerRepository = customerRepository;
         this.messageRepository = messageRepository;
         this.messageResponseMapper = messageResponseMapper;
         this.chatbotConfigProperties = chatbotConfigProperties;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
@@ -50,9 +52,8 @@ public class MessageServiceImpl implements MessageService {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (customer.isEmpty()) throw new CustomerNotFoundException();
 
-        Comparator<Message> createdAtComparator = Comparator.comparing(Message::getCreatedAt);
         List<Message> messages = customer.get().getMessages();
-        messages.sort(createdAtComparator);
+        messages.sort(Comparator.comparing(Message::getCreatedAt));
 
         return messages.stream().map(messageResponseMapper::fromModel).toList();
     }
@@ -62,18 +63,12 @@ public class MessageServiceImpl implements MessageService {
         Optional<Customer> customer = customerRepository.findByPhoneNumber(receiveMessageRequest.From());
         customer.orElseGet(() -> customerRepository.save(new Customer(receiveMessageRequest.From(), null)));
 
-        if (customer.isEmpty()) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
+        if (customer.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
 
-        this.createMessage(
-                customer.get().getId(),
-                new CreateMessageRequest(receiveMessageRequest.Body(), MessageRole.USER)
-        );
+        this.createMessage(customer.get().getId(), new CreateMessageRequest(receiveMessageRequest.Body(), MessageRole.USER));
+        AiAssistant aiAssistant = new AiAssistant(chatbotConfigProperties, customer.get().getId(), customerRepository, appointmentRepository);
 
-        AiAssistant aiAssistant = new AiAssistant(this.chatbotConfigProperties, customer.get().getId(), this.customerRepository);
-
-        return this.createMessage(
-                customer.get().getId(),
-                new CreateMessageRequest(aiAssistant.chat(receiveMessageRequest.Body()), MessageRole.MODEL)
-        );
+        return this.createMessage(customer.get().getId(), new CreateMessageRequest(aiAssistant.chat(receiveMessageRequest.Body()), MessageRole.MODEL));
     }
 }
